@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-docker-socket-t1611
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: container-docker-socket-t1611
+  template:
+    metadata:
+      labels:
+        app: container-docker-socket-t1611
+    spec:
+      containers:
+        - name: container-docker-socket-t1611
+          image: docker:28.1.1-dind
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: ""
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: true
+            privileged: true
+          ports:
+            - containerPort: 2375
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - sh
+                  - -c
+                  - |
+                    echo "Waiting for dockerd to create /var/run/docker.sock..." ;
+                    for i in $(seq 1 30); do
+                      [ -S /var/run/docker.sock ] && exit 0
+                      sleep 1
+                    done
+                    echo "Timeout waiting for Docker socket" >&2
+                    exit 1

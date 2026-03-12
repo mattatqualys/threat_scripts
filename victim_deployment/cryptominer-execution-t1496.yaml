@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cryptominer-execution-t1496
+spec:
+  selector:
+    matchLabels:
+      app: cryptominer-execution-t1496
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cryptominer-execution-t1496
+    spec:
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+      containers:
+      - name: miner-test
+        image: miningcontainers/xmrig:latest

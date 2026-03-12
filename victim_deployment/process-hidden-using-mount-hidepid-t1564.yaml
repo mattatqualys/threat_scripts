@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: process-hidden-using-mount-hidepid-t1564
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: process-hidden-using-mount-hidepid-t1564
+  template:
+    metadata:
+      labels:
+        app: process-hidden-using-mount-hidepid-t1564
+    spec:
+      containers:
+      - name: process-hidden-using-mount-hidepid-t1564
+        image: angelrita/base-ubuntu:latest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - while true; do sleep 30; done;
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

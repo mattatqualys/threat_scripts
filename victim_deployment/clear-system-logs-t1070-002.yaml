@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clear-system-logs-t1070-002
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clear-system-logs-t1070-002
+  template:
+    metadata:
+      labels:
+        app: clear-system-logs-t1070-002
+    spec:
+      containers:
+      - name: clear-system-logs-t1070-002
+        image: angelrita/base-ubuntu:latest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - while true; do sleep 30; done;
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

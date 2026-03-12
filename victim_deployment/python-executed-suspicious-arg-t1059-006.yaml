@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-executed-suspicious-arg-t1059-006
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-executed-suspicious-arg-t1059-006
+  template:
+    metadata:
+      labels:
+        app: python-executed-suspicious-arg-t1059-006
+    spec:
+      containers:
+      - name: python-executed-suspicious-arg-t1059-006
+        image: qualysdockerhub/overlay-functional:threatqatest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - while true; do sleep 30; done;
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

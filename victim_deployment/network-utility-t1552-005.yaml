@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: network-utility-t1552-005
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: network-utility-t1552-005
+  template:
+    metadata:
+      labels:
+        app: network-utility-t1552-005
+    spec:
+      containers:
+      - name: network-utility-t1552-005
+        image: qualysdockerhub/overlay-functional:threatqatest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - while true; do sleep 30; done;
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

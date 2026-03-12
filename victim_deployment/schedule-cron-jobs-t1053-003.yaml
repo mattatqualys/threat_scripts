@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: schedule-cron-jobs-t1053-003
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: schedule-cron-jobs-t1053-003
+  template:
+    metadata:
+      labels:
+        app: schedule-cron-jobs-t1053-003
+    spec:
+      containers:
+      - name: schedule-cron-jobs-t1053-003
+        image: qualysdockerhub/overlay-functional:threatqatest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - crontab -e
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: escape-cgroup-t1611
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: escape-cgroup-t1611
+  template:
+    metadata:
+      labels:
+        app: escape-cgroup-t1611
+    spec:
+      containers:
+      - name: escape-cgroup-t1611
+        image: angelrita/base-ubuntu:latest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - while true; do sleep 30; done;
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

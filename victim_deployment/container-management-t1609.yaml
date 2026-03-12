@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-management-t1609
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: container-management-t1609
+  template:
+    metadata:
+      labels:
+        app: container-management-t1609
+    spec:
+      containers:
+      - name: container-management-t1609
+        image: angelrita/base-ubuntu:latest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - while true; do sleep 30; done;
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

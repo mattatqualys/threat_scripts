@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: launch-ingress-remote-file-copy-t1105
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: launch-ingress-remote-file-copy-t1105
+  template:
+    metadata:
+      labels:
+        app: launch-ingress-remote-file-copy-t1105
+    spec:
+      containers:
+      - name: launch-ingress-remote-file-copy-t1105
+        image: qualysdockerhub/overlay-functional:threatqatest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - while true; do sleep 30; done;
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true

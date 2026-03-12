@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: network-scanning-utility-t1046
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: network-scanning-utility-t1046
+  template:
+    metadata:
+      labels:
+        app: network-scanning-utility-t1046
+    spec:
+      containers:
+      - name: network-scanning-utility-t1046
+        image: angelrita/base-ubuntu:latest
+        command:
+          - /bin/sh
+          - -c
+        args:
+        - while true; do sleep 30; done;
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true
